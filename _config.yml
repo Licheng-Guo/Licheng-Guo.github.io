@@ -1,5 +1,9 @@
 # Setup
-title:               Licheng Guo
-email:               [first-name][last-name]777@[google email]
-url:                 http://licheng-guo.github.io
-baseurl:             ''
+title: "Licheng Guo"
+email: "[first name][last name]777@[google email]"
+url: "https://licheng-guo.github.io"
+baseurl: ""  # Must be empty for root-level GitHub Pages
+
+markdown: kramdown
+theme: null
+remote_theme: poole/lanyon
