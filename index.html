@@ -1,37 +1,27 @@
 ---
 layout: default
-title: Home
 ---
 
-<div class="posts">
-  {% for post in paginator.posts %}
-  <div class="post">
-    <h1 class="post-title">
-      <a href="{{ post.url | absolute_url }}">
-        {{ post.title }}
-      </a>
-    </h1>
+<h1>About Me</h1>
 
-    <span class="post-date">{{ post.date | date_to_string }}</span>
+<p>
+My name is Licheng Guo. I received my Ph.D. degree in 2022, my M.S. degree in 2021, both in Computer Science from UCLA.
+Prior to that I received my B.S. degree in Electronic Engineering from Zhejiang University in 2018.
+</p>
 
-    {{ post.content }}
-  </div>
-  {% endfor %}
-</div>
+<p>
+My research focuses on co-optimizing HLS compilers (from C++ to RTL) and physical design tools (from RTL to hardware)
+to improve the circuit maximal frequency and reduce the compilation time. I co-founded RapidStream Design Automation based on my PhD thesis.
+</p>
 
-<div class="pagination">
-  {% if paginator.next_page %}
-    <a class="pagination-item older" href="{{ paginator.next_page_path | absolute_url }}">Older</a>
-  {% else %}
-    <span class="pagination-item older">Older</span>
-  {% endif %}
-  {% if paginator.previous_page %}
-    {% if paginator.page == 2 %}
-      <a class="pagination-item newer" href="{{ '/' | absolute_url }}">Newer</a>
-    {% else %}
-      <a class="pagination-item newer" href="{{ paginator.previous_page_path | absolute_url }}">Newer</a>
-    {% endif %}
-  {% else %}
-    <span class="pagination-item newer">Newer</span>
-  {% endif %}
-</div>
+<p>
+I love travelling and aspire to explore every country of this amazing world.
+I also love music and currently I am actively practicing flute.
+</p>
+
+<h2>Links</h2>
+
+<ul>
+  <li><a href="https://scholar.google.com/citations?user=g3tmKnsAAAAJ&hl=en" target="_blank">Google Scholar</a></li>
+  <li><a href="https://www.linkedin.com/in/licheng-guo-155b52b0/" target="_blank">LinkedIn</a></li>
+</ul>
