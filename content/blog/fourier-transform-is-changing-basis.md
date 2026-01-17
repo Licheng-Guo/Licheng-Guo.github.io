@@ -7,17 +7,17 @@ math: true
 
 *This post explains DFT and DCT from a linear algebra perspective. The note has been polished by AI based on the original learning notes of the author.*
 
-When I tried to learn Fourier transformation in undergrad, I never really figured out why the formula is the way it is. I rigidly and brute-forcefully memorize the formulas to answer exam questions and then totally forgot everything two weeks after the semester. Almost 10 years after I originally took the course, I had an in-depth discussion with AI what exactly is Fourier Transformation and was fortunate to have an aha moment.
+When I tried to learn Fourier transformation in undergrad, I never really figured out why the formula is the way it is. I rigidly memorized the formulas through brute force to answer exam questions, then completely forgot everything two weeks after the semester ended. Almost 10 years later, I had an in-depth discussion with AI about what Fourier Transformation actually is and was fortunate to have an aha moment.
 
 Fourier transformation is just a change of basis from a linear algebra perspective.
 
-This blog will starts with Discrete Fourier Transformation (DFT), and then extends the idea to Discrete Cosine Transformation (DCT). It was a breathtaking moment for me to realize that, behind the mysterious transformation formula, how simple and intuitive they are.
+This blog will start with Discrete Fourier Transformation (DFT), and then extend the idea to Discrete Cosine Transformation (DCT). It was a breathtaking moment for me to realize how simple and intuitive they are behind the mysterious formulas.
 
 ## DFT as Change of Basis
 
-Textbooks often describe DFT as "mapping signals from the time domain to the frequency domain". There is nothing fancy about a signal. Now, to describe any vector, you need a **basis** — a set of N linearly independent vectors that can combine to create any point in that space. A real signal $\mathbf{x}$ of N samples is just a vector in $\mathbb{R}^N$ with the standard basis $[1, 0, 0, ...]^T$, $[0, 1, 0, ...]^T$, etc. (We'll work in $\mathbb{C}^N$ since DFT uses complex exponentials as basis vectors.)
+Textbooks often describe DFT as "mapping signals from the time domain to the frequency domain". But there is nothing fancy about a signal — to describe any vector, you need a **basis**, a set of N linearly independent vectors that can combine to represent any point in that space. A real signal $\mathbf{x}$ of N samples is just a vector in $\mathbb{R}^N$ with the standard basis $[1, 0, 0, ...]^T$, $[0, 1, 0, ...]^T$, etc. (We'll work in $\mathbb{C}^N$ since DFT uses complex exponentials as basis vectors.)
 
-The DFT process simply says, now I have a different set of $N$ basis vectors as follows, what is the coordinate of the signal vector expressed with this new set of basis vectors? We will explain where these set of basis vectors come from, but for now let's just assume they are provided.
+The DFT process simply asks: given a different set of $N$ basis vectors, what are the coordinates of the signal vector in this new basis? We will explain where these basis vectors come from later, but for now let's just assume they are provided.
 
 $$
 \mathbf{b}_0 = [e^{i \cdot 0 \cdot \frac{2\pi \cdot 0}{N}}, e^{i \cdot 0 \cdot \frac{2\pi \cdot 1}{N}}, ..., e^{i \cdot 0 \cdot \frac{2\pi \cdot (N-1)}{N}}]^T = [1, 1, ..., 1]^T
@@ -50,13 +50,13 @@ $$
 
 Note that the DFT bases are **orthogonal** — each basis vector is perpendicular to all others. This is crucial so that projections are independent and reconstruction is trivial.
 
-To compute the coefficients $X_k$ of signal vector $\mathbf{x}$ on the basis vector $\mathbf{b_k}$, we perform the inner product between them— a projection. You're asking: "How much does my signal point in the direction of this basis vector?" 
+To compute the coefficient $X_k$ for basis vector $\mathbf{b_k}$, we take the inner product of the signal $\mathbf{x}$ with that basis vector — a projection. You're asking: "How much does my signal point in the direction of this basis vector?" 
 
 If your signal is perfectly aligned with basis vector k (say, a pure cosine at that frequency), the projection is large. If your signal is perpendicular to it, the projection is zero.
 
 The collection of all these projections ${X₀, X₁, ..., X_{N-1}}$ is just your original vector **expressed in the new coordinate system**.
 
-Note the conjugate operation since we are in complex domain.
+Note the conjugate operation since we are in the complex domain.
 $$
 \begin{aligned}
 X_k &= \langle \mathbf{x}, \mathbf{b_k} \rangle \\
@@ -65,25 +65,25 @@ X_k &= \langle \mathbf{x}, \mathbf{b_k} \rangle \\
 &= \sum_{n=0}^{N-1} x[n] \cdot {e^{-i \cdot k \cdot \frac{2\pi \cdot n}{N}}} \\
 \end{aligned}
 $$
-Therefore, when we express the same vector $\mathbf{x}$ through this new magic set of basis vectors.
+Therefore, expressing the same vector $\mathbf{x}$ in this new basis gives us:
 
 $$ \begin{bmatrix} \langle \mathbf{x}, \mathbf{b_0} \rangle \\ \langle \mathbf{x}, \mathbf{b_1} \rangle \\ ... \\ \langle \mathbf{x}, \mathbf{b_{N-1}} \rangle \end{bmatrix}$$
 
 Does that look familiar? That's exactly the formula to compute DFT. 
 
-Note that to get the true coordinate (coefficient) in the new basis, we need to divide $\langle \mathbf{x}, \mathbf{b_k} \rangle$ by $\|\mathbf{b}_k\|^2$. For this specific set of basis, $\|\mathbf{b}_k\|^2 = N$ for each basis vector. As is the convention for DFT, we skip this division in the forward transform and instead adjust by $1/N$ when we reconstruct the signal.
+Note that to get the true coefficient in the new basis, we need to divide $\langle \mathbf{x}, \mathbf{b_k} \rangle$ by $\|\mathbf{b}_k\|^2$. For the DFT basis, $\|\mathbf{b}_k\|^2 = N$ for each basis vector. By convention, DFT skips this division in the forward transform and instead applies the $1/N$ factor during reconstruction.
 
 ## Inverse DFT as Reconstruction
 
-The inverse DFT is just a weighted sum of basis vectors. It is just the definition of what a basis means:
+The inverse DFT is just a weighted sum of basis vectors — exactly what "expressing a vector in a basis" means:
 
 $$\text{signal} = \sum_{k=0}^{N-1} X_k \cdot (\text{basis vector } k)$$
 
-Each coefficient $X_k$ tells you "how much" of basis vector k to include. Add them all up, you get your original vector back. This is exactly like saying:
+Each coefficient $X_k$ tells you "how much" of basis vector k to include. Add them all up and you get your original vector back. This is exactly like writing:
 
 $$\vec{v} = v_x \hat{x} + v_y \hat{y} + v_z \hat{z}$$
 
-Same idea, just with sinusoids instead of $x̂$, $ŷ$, $ẑ$.
+Same idea, just with sinusoids instead of $\hat{x}$, $\hat{y}$, $\hat{z}$.
 
 
 But here's the catch: our basis vectors aren't **unit length**. As we mentioned, to get the true coefficients we should have divided $X_k$ by $\|\mathbf{b}_k\|^2 = N$, but by convention DFT skips this normalization. So we need to apply the $1/N$ factor in the reconstruction process.
@@ -91,10 +91,10 @@ But here's the catch: our basis vectors aren't **unit length**. As we mentioned,
 $$
 \mathbf{x} = \frac{1}{N}\sum_{k=0}^{N-1} X_k \cdot \mathbf{b}_k
 $$
-Thus
+Writing out the n-th component:
 $${x[n] = \frac{1}{N} \sum_{k=0}^{N-1} X_k \cdot e^{i \cdot 2\pi k n / N}}$$
 
-That's the inverse DFT. The **positive sign** in the exponent appears because we're summing the basis vectors themselves (not their conjugates). The **1/N** is just normalization by the basis vector norms.
+That's the inverse DFT. The **positive sign** in the exponent appears because we're summing the basis vectors themselves (not their conjugates). The **1/N** factor is simply normalization to account for the basis vector norms.
 
 ## Summary of DFT and Inverse DFT
 
@@ -128,9 +128,9 @@ DFT uses complex exponentials, which is elegant but means real signals produce c
 Both are just different choices of orthogonal basis for the same N-dimensional space.
 
 
-## The Basis Vectors
+## The DCT Basis Vectors
 
-First, we define our basis. The k-th DCT basis vector has components:
+The k-th DCT basis vector has components:
 
 $$\mathbf{b}_k[n] = \cos\left(\frac{\pi k (n + 0.5)}{N}\right) \quad \text{for } n = 0, 1, ..., N-1$$
 
@@ -160,7 +160,7 @@ That's the DCT formula. It's just N inner products — one projection per basis 
 
 ## Inverse DCT: Reconstruction
 
-The inverse asks: "Given coordinates, reconstruct the vector."
+The inverse transform asks: "Given these coordinates, how do we reconstruct the original vector?"
 
 For any basis, reconstruction is:
 
@@ -174,7 +174,7 @@ $$c_k = \frac{X_k}{|\mathbf{b}_k|^2}$$
 
 The norms of our DCT basis vectors are:
 
-- $|\mathbf{b}_0|^2 = N$ (the k=0 basis vector is all 1s)
+- $|\mathbf{b}_0|^2 = N$ (since the k=0 basis vector is all ones)
 - $|\mathbf{b}_k|^2 = N/2$ for k > 0
 
 So the reconstruction coefficients are:
