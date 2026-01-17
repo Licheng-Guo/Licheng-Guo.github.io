@@ -1,7 +1,7 @@
 ---
-title: "Understanding Rotary Position Embedding (RoPE)"
+title: "Intuitive Understanding of Rotary Position Embedding (RoPE)"
 date: 2026-01-05
-tags: ["machine-learning", "transformers", "attention"]
+tags: ["understanding-gpt"]
 math: true
 ---
 
@@ -90,9 +90,30 @@ No single frequency works for all distance scales.
 
 To solve this, RoPE rotates **different segments of the vector at different rates**.
 
+Before jumping to the full implementation, let's see why multiple frequencies help using a simple example where we break the vector into two segments.
+
+A dot product of high-dimensional vectors can be decomposed into parts. Denote the lower half of $\vec{a}$ as $\vec{a_l}$ and the upper half as $\vec{a_u}$:
+
+$$
+\vec{a} \cdot \vec{b} = \vec{a_l} \cdot \vec{b_l} + \vec{a_u} \cdot \vec{b_u} = |a_l||b_l|\cos\phi_1 + |a_u||b_u|\cos\phi_2
+$$
+
+where $\phi_1$ is the angle between $\vec{a_l}$ and $\vec{b_l}$, and $\phi_2$ is the angle between $\vec{a_u}$ and $\vec{b_u}$.
+
+Now, if we rotate the two segments at **different rates** — say the lower half at $\theta_1$ per position and the upper half at $\theta_2$ per position — we get:
+
+$$
+\vec{a}_{\text{rot}} \cdot \vec{b}_{\text{rot}} = |a_l||b_l|\cos(\phi_1 + \theta_1 \times \Delta) + |a_u||b_u|\cos(\phi_2 + \theta_2 \times \Delta)
+$$
+
+where $\Delta = n - m$ is the relative distance.
+
+This is a sum of two cosines at different frequencies. Even if one frequency causes a collision (e.g., $\theta_1 \times \Delta$ wraps around to the same angle), the other frequency likely won't. The two terms together create a more unique signature for each distance.
+
+
 ### Partitioning into Pairs
 
-A $d$-dimensional vector is split into $d/2$ consecutive pairs. Each pair is treated as an independent 2D vector:
+In practice, RoPE extends this idea further: instead of two halves, we partition the vector into **consecutive pairs of dimensions**, and each pair rotates at its own frequency. This gives us $d/2$ different frequencies, making collisions virtually impossible. Each pair is treated as an independent 2D vector:
 
 $$\vec{a} = \underbrace{[a_0, a_1]}_{\text{Pair 0}}, \underbrace{[a_2, a_3]}_{\text{Pair 1}}, \ldots, \underbrace{[a_{d-2}, a_{d-1}]}_{\text{Pair } d/2-1}$$
 
