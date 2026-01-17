@@ -36,14 +36,13 @@ params:
   showtoc: false
   tocopen: false
 
-  homeInfoParams:
-    Title: "Licheng Guo"
-    Content: >
-      Ph.D. in Computer Science from UCLA (2022).
-
-      - [Google Scholar](https://scholar.google.com/citations?user=g3tmKnsAAAAJ&hl=en)
-
-      - [LinkedIn](https://www.linkedin.com/in/licheng-guo-155b52b0/)
+  profileMode:
+    enabled: true
+    title: "Licheng Guo"
+    subtitle: "My name is Licheng Guo. I received my Ph.D. degree in 2022, my M.S. degree in 2021, both in Computer Science from UCLA. Prior to that I received my B.S. degree in Electronic Information Engineering from Zhejiang University in 2018."
+    imageUrl: "/images/profile.jpg"
+    imageWidth: 250
+    imageHeight: 250
 
   socialIcons:
     - name: googlescholar
@@ -79,10 +78,6 @@ menu:
       name: Tags
       url: /tags/
       weight: 30
-    - identifier: about
-      name: About
-      url: /about/
-      weight: 40
 
 outputs:
   home:
