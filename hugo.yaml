@@ -45,7 +45,7 @@ params:
   profileMode:
     enabled: true
     title: "Licheng Guo"
-    subtitle: "My name is Licheng Guo. I received my Ph.D. degree in 2022, my M.S. degree in 2021, both in Computer Science from UCLA. Prior to that I received my B.S. degree in Electronic Information Engineering from Zhejiang University in 2018."
+    subtitle: ""
     imageUrl: "/images/profile.jpg"
     imageWidth: 250
     imageHeight: 250
@@ -72,6 +72,10 @@ params:
 
 menu:
   main:
+    - identifier: about
+      name: About
+      url: /about/
+      weight: 5
     - identifier: blog
       name: Blog
       url: /blog/
