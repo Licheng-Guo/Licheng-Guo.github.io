@@ -1,0 +1,48 @@
+{{- define "main" }}
+
+<div class="home-container" style="display: flex; flex-wrap: wrap; gap: 5rem; max-width: 900px; margin: 0 auto; padding: 2rem 1rem; align-items: flex-start;">
+
+    {{/* Left column: Profile image and social links - horizontally centered, top-aligned */}}
+    <div class="profile-column" style="flex: 0 0 200px; display: flex; flex-direction: column; align-items: center;">
+        {{- with site.Params.profileMode }}
+        {{- if .imageUrl -}}
+        {{- $img := "" }}
+        {{- if not (urls.Parse .imageUrl).IsAbs }}
+            {{- $img = resources.Get .imageUrl }}
+        {{- end }}
+        {{- if $img }}
+            <img draggable="false" src="{{ $img.Permalink }}" alt="profile image"
+                style="border-radius: 50%; width: 180px; height: 180px; object-fit: cover; margin-bottom: 1rem;" />
+        {{- else }}
+            <img draggable="false" src="{{ .imageUrl | absURL }}" alt="profile image"
+                style="border-radius: 50%; width: 180px; height: 180px; object-fit: cover; margin-bottom: 1rem;" />
+        {{- end }}
+        {{- end }}
+        {{- end }}
+
+        {{- partial "social_icons.html" -}}
+    </div>
+
+    {{/* Right column: Bio content */}}
+    <div class="bio-column" style="flex: 1; min-width: 300px;">
+        <div class="post-content" style="font-size: 0.95rem; line-height: 1.7;">
+            {{- with site.GetPage "/" }}
+                {{ .Content }}
+            {{- end }}
+        </div>
+    </div>
+
+    <style>
+        .profile-column img { margin-top: 0.5rem; }
+        .bio-column .post-content p:first-of-type { margin-top: 0; padding-top: 0; }
+        .bio-column .post-content { margin-top: 0; padding-top: 0; }
+
+        @media (max-width: 600px) {
+            .home-container { justify-content: center; }
+            .profile-column { flex: 0 0 100%; margin-bottom: 1rem; }
+        }
+    </style>
+
+</div>
+
+{{- end }}{{/* end main */}}

@@ -43,16 +43,16 @@ params:
   tocopen: false
 
   profileMode:
-    enabled: true
-    title: "Licheng Guo"
-    subtitle: ""
+    enabled: false
     imageUrl: "/images/profile.jpg"
-    imageWidth: 250
-    imageHeight: 250
+    imageWidth: 180
+    imageHeight: 180
 
   socialIcons:
     - name: googlescholar
       url: "https://scholar.google.com/citations?user=g3tmKnsAAAAJ&hl=en"
+    - name: github
+      url: "https://github.com/Licheng-Guo"
     - name: linkedin
       url: "https://www.linkedin.com/in/licheng-guo-155b52b0/"
 
@@ -72,10 +72,6 @@ params:
 
 menu:
   main:
-    - identifier: about
-      name: About
-      url: /about/
-      weight: 5
     - identifier: blog
       name: Blog
       url: /blog/
