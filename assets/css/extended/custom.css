@@ -1,3 +1,8 @@
 .post-content {
     text-align: justify;
 }
+
+/* Light code block background - matches monokailight theme */
+:root {
+    --code-block-bg: #fafafa;
+}
